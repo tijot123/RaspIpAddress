@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Raspberry IP Address</string>
+    <string name="raspberry_ip_address">Raspberry IP Address</string>
+    <string name="enter_ip_address">Enter IP Address</string>
+    <string name="up">Up</string>
+    <string name="down">Down</string>
+</resources>
