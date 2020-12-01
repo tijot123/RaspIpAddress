@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">Raspberry IP Address</string>
+    <string name="app_name">Faststream Technologies</string>
     <string name="raspberry_ip_address">Raspberry IP Address</string>
     <string name="enter_ip_address">Enter IP Address</string>
-    <string name="up">Up</string>
+    <string name="up">Start</string>
     <string name="down">Down</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
 </resources>

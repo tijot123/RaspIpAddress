@@ -1,50 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="20dp"
+        android:background="?attr/colorOnPrimary"
         tools:context=".MainActivity">
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <ImageView
+            android:id="@+id/logoView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/bg_logo"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ipAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="@string/enter_ip_address"
             android:inputType="textPersonName"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            app:boxStrokeColor="@color/purple_500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btnUp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logoView">
 
-        <com.google.android.material.button.MaterialButton
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ipAddressEdit"
+                android:layout_width="match_parent"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:layout_height="wrap_content">
+
+                <requestFocus />
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnUp"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
+            android:background="@drawable/button_bg"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ipAddress"
             android:layout_alignParentStart="true"
             android:layout_marginTop="16dp"
             android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:text="@string/up"
+            app:layout_constraintTop_toBottomOf="@id/ipAddress"
             android:textColor="@color/white" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_below="@+id/btnUp"
+            app:layout_constraintTop_toBottomOf="@id/btnUp"
             android:layout_alignStart="@+id/btnUp"
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="@string/down"
             android:textColor="@color/white" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@color/teal_200"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnUp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

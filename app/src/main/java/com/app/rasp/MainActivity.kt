@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.DataOutputStream
 import java.io.IOException
+import java.net.ConnectException
 import java.net.InetAddress
 import java.net.Socket
 import java.net.UnknownHostException
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         binding.btnUp.setOnClickListener {
-            val ipAddressValid = binding.ipAddress.text.toString().isIpAddressValid()
+            val ipAddressValid = binding.ipAddressEdit.text.toString().isIpAddressValid()
             if (ipAddressValid) {
                 getIPandPort()
                 cmd = "0"
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 .setAnchorView(binding.btnUp).show()
         }
         binding.btnDown.setOnClickListener {
-            val ipAddressValid = binding.ipAddress.text.toString().isIpAddressValid()
+            val ipAddressValid = binding.ipAddressEdit.text.toString().isIpAddressValid()
             if (ipAddressValid) {
                 getIPandPort()
                 cmd = "1"
@@ -64,25 +65,43 @@ class MainActivity : AppCompatActivity() {
     private fun writeData() {
         uiScope.launch {
             withContext(Dispatchers.IO) {
+                var connected = false
                 try {
+                    connected = mSocket.isConnected
                     dos.writeBytes(cmd)
                 } catch (e: UnknownHostException) {
                     e.printStackTrace()
                 } catch (e: IOException) {
                     e.printStackTrace()
+                } catch (e: ConnectException) {
+                    e.printStackTrace()
+                }
+                withContext(Dispatchers.Main) {
+                    if (connected) {
+                        binding.status.text = getString(R.string.connected)
+                    } else binding.status.text = getString(R.string.disconnected)
                 }
             }
         }
     }
 
     override fun onDestroy() {
-        dos.close()
-        mSocket.close()
+        uiScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    dos.close()
+                    mSocket.close()
+                } catch (e: ConnectException) {
+                    e.printStackTrace()
+                }
+
+            }
+        }
         super.onDestroy()
     }
 
     private fun getIPandPort() {
-        val iPandPort: String = binding.ipAddress.text.toString()
+        val iPandPort: String = binding.ipAddressEdit.text.toString()
         Log.d("MYTEST", "IP String: $iPandPort")
         val temp = iPandPort.split(":")
         wifiModuleIp = temp[0]
