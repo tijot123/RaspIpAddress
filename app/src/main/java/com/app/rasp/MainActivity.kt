@@ -52,17 +52,29 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     e.printStackTrace()
                 }
                 withContext(Dispatchers.Main) {
+                    setUpConnectionStatus(connected)
                     if (connected) {
-                        binding.status.text = getString(R.string.connected)
-                    } else binding.status.text = getString(R.string.disconnected)
-                    if (connected)
                         startActivity(Intent(this@MainActivity, SuccessPageActivity::class.java))
+                        //closeConnection()
+                    }
+
                 }
             }
         }
     }
 
+    private fun setUpConnectionStatus(connected: Boolean) {
+        if (connected) {
+            binding.status.text = getString(R.string.connected)
+        } else binding.status.text = getString(R.string.disconnected)
+    }
+
     override fun onDestroy() {
+        closeConnection()
+        super.onDestroy()
+    }
+
+    private fun closeConnection() {
         uiScope.launch {
             withContext(Dispatchers.IO) {
                 try {
@@ -71,10 +83,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 } catch (e: ConnectException) {
                     e.printStackTrace()
                 }
-
             }
         }
-        super.onDestroy()
+    }
+
+    override fun onResume() {
+        uiScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val connected = mSocket.isConnected
+                    withContext(Dispatchers.Main) {
+                        setUpConnectionStatus(connected)
+                    }
+                } catch (e: ConnectException) {
+                    e.printStackTrace()
+                    withContext(Dispatchers.Main) {
+                        setUpConnectionStatus(false)
+                    }
+                }
+            }
+        }
+        super.onResume()
     }
 
     private fun getIPandPort() {
