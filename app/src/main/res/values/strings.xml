@@ -6,4 +6,7 @@
     <string name="down">Down</string>
     <string name="connected">Connected</string>
     <string name="disconnected">Disconnected</string>
+    <string name="left_quotation">&#8220;</string>
+    <string name="right_quotation">&#8221;</string>
+    <string name="done">Done</string>
 </resources>

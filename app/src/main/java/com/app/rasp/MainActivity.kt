@@ -1,9 +1,8 @@
 package com.app.rasp
 
-import android.os.Bundle
+import android.content.Intent
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import com.app.rasp.base.BaseActivity
 import com.app.rasp.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +16,7 @@ import java.net.InetAddress
 import java.net.Socket
 import java.net.UnknownHostException
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val uiScope by lazy { CoroutineScope(Dispatchers.Main) }
     private var cmd: String = ""
     var wifiModuleIp = ""
@@ -32,30 +31,6 @@ class MainActivity : AppCompatActivity() {
 
     private val dos by lazy {
         DataOutputStream(mSocket.getOutputStream())
-    }
-    private lateinit var binding: ActivityMainBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        binding.btnUp.setOnClickListener {
-            val ipAddressValid = binding.ipAddressEdit.text.toString().isIpAddressValid()
-            if (ipAddressValid) {
-                getIPandPort()
-                cmd = "0"
-                writeData()
-            } else Snackbar.make(binding.root, "Invalid IP", Snackbar.LENGTH_LONG)
-                .setAnchorView(binding.btnUp).show()
-        }
-        binding.btnDown.setOnClickListener {
-            val ipAddressValid = binding.ipAddressEdit.text.toString().isIpAddressValid()
-            if (ipAddressValid) {
-                getIPandPort()
-                cmd = "1"
-                writeData()
-            } else Snackbar.make(binding.root, "Invalid IP", Snackbar.LENGTH_LONG)
-                .setAnchorView(binding.btnDown).show()
-        }
     }
 
     private fun String.isIpAddressValid(): Boolean {
@@ -80,6 +55,8 @@ class MainActivity : AppCompatActivity() {
                     if (connected) {
                         binding.status.text = getString(R.string.connected)
                     } else binding.status.text = getString(R.string.disconnected)
+                    if (connected)
+                        startActivity(Intent(this@MainActivity, SuccessPageActivity::class.java))
                 }
             }
         }
@@ -110,4 +87,27 @@ class MainActivity : AppCompatActivity() {
         Log.d("MY TEST", "IP:$wifiModuleIp")
         Log.d("MY TEST", "PORT:$wifiModulePort")
     }
+
+    override fun initViews() {
+        binding.btnUp.setOnClickListener {
+            val ipAddressValid = binding.ipAddressEdit.text.toString().isIpAddressValid()
+            if (ipAddressValid) {
+                getIPandPort()
+                cmd = "0"
+                writeData()
+            } else Snackbar.make(binding.root, "Invalid IP", Snackbar.LENGTH_LONG)
+                .setAnchorView(binding.btnUp).show()
+        }
+        binding.btnDown.setOnClickListener {
+            val ipAddressValid = binding.ipAddressEdit.text.toString().isIpAddressValid()
+            if (ipAddressValid) {
+                getIPandPort()
+                cmd = "1"
+                writeData()
+            } else Snackbar.make(binding.root, "Invalid IP", Snackbar.LENGTH_LONG)
+                .setAnchorView(binding.btnDown).show()
+        }
+    }
+
+    override fun getLayoutId(): Int = R.layout.activity_main
 }
