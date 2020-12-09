@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "291946328644",
+    "project_id": "facedetectionrasp",
+    "storage_bucket": "facedetectionrasp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291946328644:android:4c091e744ebe9a1642c211",
+        "android_client_info": {
+          "package_name": "com.app.rasp.face"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291946328644-9s2d5bl2t8bfmjssgqsul68vrvhs12do.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPUamZVT5Lq2_yHjRG91J_kMyzX9QEXlk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291946328644-9s2d5bl2t8bfmjssgqsul68vrvhs12do.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

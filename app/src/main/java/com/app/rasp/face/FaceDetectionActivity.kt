@@ -10,6 +10,7 @@ import com.app.rasp.databinding.ActivityFaceDetectionBinding
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.FaceContour
 import com.google.mlkit.vision.face.FaceDetection
+import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.google.mlkit.vision.face.FaceLandmark
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
@@ -25,6 +26,22 @@ class FaceDetectionActivity : BaseActivity<ActivityFaceDetectionBinding>() {
 
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
+
+    // High-accuracy landmark detection and face classification
+    val highAccuracyOpts by lazy {
+        FaceDetectorOptions.Builder()
+            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+            .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
+            .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+            .build()
+    }
+
+    // Real-time contour detection
+    val realTimeOpts by lazy {
+        FaceDetectorOptions.Builder()
+            .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
+            .build()
+    }
 
     override fun initViews() {
         needsCameraPermissionWithPermissionCheck()
